@@ -9,16 +9,20 @@ class StyleSheetReader:
     As this information will need to be used for most of the User Interfaces
     This class is intended to reduce the number of times the style sheet is read
     """
-
-    style_sheet: str = None
+    static_style = None
 
     def __init__(self) -> None:
         """
         Initialising the StyleSheetReader and getting the data from the style sheet
         :rtype: None
         """
+        self.style_sheet: str = None
+        if StyleSheetReader.static_style is not None:
+            self.style_sheet = StyleSheetReader.static_style
         if self.style_sheet is None:
-            StyleSheetReader.style_sheet = self._get_layout_data()
+            self.style_sheet = self._get_layout_data()
+        if StyleSheetReader.static_style is None:
+            StyleSheetReader.static_style = self.style_sheet
         if self.style_sheet is None:
             raise ValueError("No StyleSheet")
 
@@ -34,7 +38,7 @@ class StyleSheetReader:
         Returns the Stylesheet static member
         :rtype: str
         """
-        return StyleSheetReader.style_sheet
+        return self.style_sheet
 
     def _get_platform_stylesheet(self, running_platform: str) -> str:
         """
