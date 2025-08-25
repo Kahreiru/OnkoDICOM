@@ -1,5 +1,5 @@
-import pathlib
 import platform
+from copy import deepcopy
 
 from src.Controller.PathHandler import resource_path
 
@@ -10,17 +10,23 @@ class StyleSheetReader:
     This class is intended to reduce the number of times the style sheet is read
     """
 
-    style_sheet: str = None
+    style_sheet: str | None = None
 
     def __init__(self) -> None:
         """
         Initialising the StyleSheetReader and getting the data from the style sheet
         :rtype: None
         """
-        if self.style_sheet is None:
+        self.style_sheet: str | None = None
+
+        if StyleSheetReader.style_sheet is None:
             StyleSheetReader.style_sheet = self._get_layout_data()
-        if self.style_sheet is None:
+        if StyleSheetReader.style_sheet is None:
             raise ValueError("No StyleSheet")
+        if self.style_sheet is None:
+            self.style_sheet = deepcopy(StyleSheetReader.style_sheet)
+
+
 
     def __call__(self) -> str:
         """
@@ -53,5 +59,7 @@ class StyleSheetReader:
         Reading the style sheet for the User Interface and loading it into the style_sheet member
         :rtype: str
         """
-        path_stylesheet = self._get_platform_stylesheet(platform.system())
-        return pathlib.Path(resource_path(path_stylesheet)).read_text()
+        path_stylesheet: str = self._get_platform_stylesheet(platform.system())
+        with open(resource_path(path_stylesheet), "r") as stylesheet_file:
+            styles: str = stylesheet_file.read()
+        return styles
