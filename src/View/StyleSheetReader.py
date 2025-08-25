@@ -54,4 +54,4 @@ class StyleSheetReader:
         :rtype: str
         """
         path_stylesheet = self._get_platform_stylesheet(platform.system())
-        return open(resource_path(path_stylesheet)).read()
+        StyleSheetReader.style_sheet = open(resource_path(path_stylesheet)).read()
