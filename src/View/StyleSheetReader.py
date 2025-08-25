@@ -10,15 +10,15 @@ class StyleSheetReader:
     This class is intended to reduce the number of times the style sheet is read
     """
 
+    style_sheet: str = None
+
     def __init__(self) -> None:
         """
         Initialising the StyleSheetReader and getting the data from the style sheet
         :rtype: None
         """
-        self.style_sheet: str = None
-
         if self.style_sheet is None:
-            self.style_sheet = self._get_layout_data()
+            StyleSheetReader.style_sheet = self._get_layout_data()
         if self.style_sheet is None:
             raise ValueError("No StyleSheet")
 
@@ -34,7 +34,7 @@ class StyleSheetReader:
         Returns the Stylesheet static member
         :rtype: str
         """
-        return self.style_sheet
+        return StyleSheetReader.style_sheet
 
     def _get_platform_stylesheet(self, running_platform: str) -> str:
         """
@@ -54,4 +54,4 @@ class StyleSheetReader:
         :rtype: str
         """
         path_stylesheet = self._get_platform_stylesheet(platform.system())
-        return pathlib.Path(resource_path(path_stylesheet)).read_text()
+        return open(resource_path(path_stylesheet)).read()
