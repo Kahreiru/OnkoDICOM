@@ -17,9 +17,11 @@ class StyleSheetReader:
         Initialising the StyleSheetReader and getting the data from the style sheet
         :rtype: None
         """
-        if self.style_sheet is None:
+
+        if StyleSheetReader.style_sheet is None:
             StyleSheetReader.style_sheet = self._get_layout_data()
-        if self.style_sheet is None:
+
+        if StyleSheetReader.style_sheet is None:
             raise ValueError("No StyleSheet")
 
     def __call__(self) -> str:
@@ -54,4 +56,6 @@ class StyleSheetReader:
         :rtype: str
         """
         path_stylesheet = self._get_platform_stylesheet(platform.system())
-        StyleSheetReader.style_sheet = open(resource_path(path_stylesheet)).read()
+        with open(resource_path(path_stylesheet), "r") as stylesheet_file:
+            styles = stylesheet_file.read()
+        return styles
