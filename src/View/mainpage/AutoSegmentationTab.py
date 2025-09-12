@@ -3,6 +3,7 @@ from PySide6 import QtWidgets
 from PySide6.QtGui import QTextCursor
 from src.Controller.AutoSegmentationController import AutoSegmentationController
 from src.View.StyleSheetReader import StyleSheetReader
+from src.Model.AutoSegmentorGroupsData import AutoSegmentationGroupsData
 
 
 class AutoSegmentationTab(QtWidgets.QWidget):
@@ -58,14 +59,9 @@ class AutoSegmentationTab(QtWidgets.QWidget):
 
         self._task_combo: QtWidgets.QComboBox = QtWidgets.QComboBox()
         # List of items which can be selected and segmented for
-        self._task_combo.addItems([
-            "total", "total_mr", "lung_vessels", "body", "body_mr",
-            "vertebrae_mr", "hip_implant", "pleural_pericard_effusion", "cerebral_bleed",
-            "head_glands_cavities", "head_muscles", "headneck_bones_vessels",
-            "headneck_muscles", "liver_vessels", "oculomotor_muscles",
-            "lung_nodules", "kidney_cysts", "breasts", "liver_segments",
-            "liver_segments_mr", "craniofacial_structures", "abdominal_muscles"
-        ])  # Need to figure out if we can make this an Enum
+        for item in AutoSegmentationGroupsData().get_data("res//default_segment_regions.csv").BodySection.unique():
+            self._task_combo.addItem(item)
+
         self._task_combo.setCurrentIndex(0)
         self._task_combo.setToolTip("Select for Segmentation Task to be completed.\n"
                                     "This will be the specific area of the body to create a segment for")
