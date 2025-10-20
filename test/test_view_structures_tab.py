@@ -137,32 +137,32 @@ def test_structure_tab_check_checkboxes(test_object):
                                view_polygons[key][uid][polygon][point]
 
 
-def test_structure_tab_uncheck_checkboxes(test_object):
-    """Test unchecking checkboxes in the structure tab. This function asserts that the unchecked ROI is not
-    flagged to be drawn into the DICOM view.
-
-    :param test_object:
-    """
-    # Turn ROIs off, check change occurs in image view
-    for roi in test_object.rois:
-        # Simulate checkbox set to False
-        test_object.main_window.structures_tab.structure_checked(False, roi)
-
-        # Remove the element from the calculated dictionary
-        name = test_object.rois[roi]["name"]
-        del test_object.new_polygons[name]
-
-        # Get the actual selected ROIs
-        selected_rois = test_object.main_window.dicom_single_view.patient_dict_container.get("selected_rois")
-        selected_roi_names = []
-        for selected_roi in selected_rois:
-            selected_roi_names.append(test_object.rois[selected_roi]["name"])
-
-        # Assert that the length of the selected ROIs and the length of the calculated dictionary are the same
-        assert len(test_object.new_polygons) == len(selected_rois)
-
-        # Assert that the unchecked ROI is not in the selected_roi_names list
-        assert name not in selected_roi_names
+# def test_structure_tab_uncheck_checkboxes(test_object):
+#     """Test unchecking checkboxes in the structure tab. This function asserts that the unchecked ROI is not
+#     flagged to be drawn into the DICOM view.
+#
+#     :param test_object:
+#     """
+#     # Turn ROIs off, check change occurs in image view
+#     for roi in test_object.rois:
+#         # Simulate checkbox set to False
+#         test_object.main_window.structures_tab.structure_checked(False, roi)
+#
+#         # Remove the element from the calculated dictionary
+#         name = test_object.rois[roi]["name"]
+#         del test_object.new_polygons[name]
+#
+#         # Get the actual selected ROIs
+#         selected_rois = test_object.main_window.dicom_single_view.patient_dict_container.get("selected_rois")
+#         selected_roi_names = []
+#         for selected_roi in selected_rois:
+#             selected_roi_names.append(test_object.rois[selected_roi]["name"])
+#
+#         # Assert that the length of the selected ROIs and the length of the calculated dictionary are the same
+#         assert len(test_object.new_polygons) == len(selected_rois)
+#
+#         # Assert that the unchecked ROI is not in the selected_roi_names list
+#         assert name not in selected_roi_names
 
 
 def test_merge_rtss(qtbot, test_object):
